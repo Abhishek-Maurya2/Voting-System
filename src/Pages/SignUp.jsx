@@ -17,13 +17,15 @@ function SignUp() {
         <div className="register">
           <h1>Register</h1>
           <form>
+            <p>University Mail Id</p>
             <input type="text" placeholder="University Mail" />
+            <p>Personal Details</p>
             <input type="text" placeholder="First Name" />
             <input type="text" placeholder="Last Name" />
             <input type="text" placeholder="University Id Number" />
             <input type="password" placeholder="Password" />
             {/* <Link to="/SignUp">register</Link> */}
-            <NavLink to="/SignUp">register</NavLink>
+          <NavLink to="/Login">Register</NavLink>
           </form>
         </div>
       </div>
