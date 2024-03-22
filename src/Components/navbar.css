@@ -14,11 +14,20 @@
   color: #000;
 }
 .links {
-  /* links flex gap-10 */
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 .links a {
     text-decoration: none;
     color: #000;
+}
+.SignOutBtn {
+  background-color: #26b6f4;
+  color: rgb(7, 61, 108);
+  padding: 0.5rem 1rem;
+  border-radius: 0.8rem;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
 }

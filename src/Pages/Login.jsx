@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { FirebaseAuth } from "../Auth/env";
-import "./auth.css"
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { FirebaseAuth, FirestoreDB } from "../Auth/env";
+import { getDoc, doc } from "firebase/firestore";
+import "./auth.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -16,9 +17,17 @@ function Login() {
       alert("Please fill all the fields");
     }
     await signInWithEmailAndPassword(FirebaseAuth, mail, password)
-      .then((userCredential) => {
-        console.log(userCredential.user);
-        navigate("/Home");
+      .then((userCred) => {
+        if (userCred) {
+          getDoc(doc(FirestoreDB, "users", userCred?.user.uid)).then(
+            (docSnap) => {
+              if (docSnap.exists()) {
+                localStorage.setItem("user", JSON.stringify(docSnap.data()));
+                navigate("/Home");
+              }
+            }
+          );
+        }
       })
       .catch((error) => {
         console.error("Error signing in:", error);

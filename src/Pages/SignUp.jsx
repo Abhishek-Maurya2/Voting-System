@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { FirebaseAuth, FirestoreDB, FirebaseStorage } from "../Auth/env";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -8,6 +10,9 @@ function SignUp() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [universityId, setUniversityId] = useState("");
+  const [orgName, setOrgName] = useState("");
+
+  const [profilePhoto, setProfilePhoto] = useState(null);
 
   const handleSignUp = async () => {
     event.preventDefault();
@@ -16,7 +21,8 @@ function SignUp() {
       password === "" ||
       firstName === "" ||
       lastName === "" ||
-      universityId === ""
+      universityId === "" ||
+      orgName === ""
     ) {
       alert("Please fill all the fields");
     }
@@ -26,12 +32,18 @@ function SignUp() {
       FirstName: firstName,
       LastName: lastName,
       UniversityId: universityId,
+      OrganisationName: orgName,
+      uid: "",
+      ParticipatedPolls: [],
+      CreatedPolls: [],
     };
     // console.log(data);
-    const auth = getAuth();
-    await createUserWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(FirebaseAuth, email, password)
       .then((userCredential) => {
-        console.log(userCredential.user);
+        data.uid = userCredential.user.uid;
+        setDoc(doc(FirestoreDB, "users", userCredential.user.uid), data).then(
+          Navigate("/Login")
+        );
       })
       .catch((error) => {
         console.error("Error creating user:", error);
@@ -55,6 +67,19 @@ function SignUp() {
         <div className="register">
           <h1>Register</h1>
           <form>
+            {/* select image */}
+            <input
+              type="file"
+              accept="image/*" // Accept only image files
+              onChange={(e) => setProfilePhoto(e.target.files[0])} // Update profilePhoto whenever the user selects a new file
+            />
+            <p>Organisation Name</p>
+            <input
+              type="text"
+              placeholder="Organisation Name"
+              value={orgName}
+              onChange={(e) => setOrgName(e.target.value)}
+            />
             <p>University Mail Id</p>
             <input
               type="text"
