@@ -4,9 +4,9 @@ function Navbar() {
   return (
     <div className="nav">
       <div className="logo">
-        <a className="text-[25px] font-semibold" href="#">Ochi</a>
+        <a className="logo" href="#">Votu</a>
       </div>
-      <div className="links flex gap-10">
+      <div className="links">
         {["Home", "About", "Services", "Contact"].map((link, index) => (
           <a key={index} href="#" className="text-md font-light">
             {link}

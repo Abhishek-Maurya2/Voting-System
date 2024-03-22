@@ -5,7 +5,10 @@ function Home() {
   return (
     <div>
       <Navbar />
-      
+      <div className="conatiner">
+        <div className="left"></div>
+        <div className="right"></div>
+      </div>
     </div>
   );
 }
